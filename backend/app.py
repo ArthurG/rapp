@@ -55,7 +55,6 @@ def allowed_filename(filename):
 @app.route('/newsong', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        print(dir(request))
         print(request.get_json())
         print(request.files)
         if 'file' not in request.files:
@@ -69,7 +68,7 @@ def index():
             submitted_file.save(os.path.join(os.getcwd(), filename))
             lines = ["line1 is lit", "line2 is lit", "line3 is lit"]
             m = {"lines": lines}
-            return json.dumps(m), 404
+            return json.dumps(m), 200
         return "failure", 404
 
 #Also consume the id of the song
