@@ -87,8 +87,9 @@ def findRhyme(word):
   # Under construction
 
 if __name__ == '__main__':
+  
   #DEBUG
   #print syllabizeArray(["bitches for days aren't my type man lol", "Rapping everyday nomsayin"])
-  #print countsylManual('quintessential')
+  print countsylManual('quintessential')
   #print isRhyme(['Thank mister caboose','I like goose'])
   print countSylArray(['One syllable', 'Two syllables'])
