@@ -1,7 +1,12 @@
 import nltk
 from nltk.misc.sort import *
 from nltk.corpus import treebank
+import RhymeBrain
+#from newspaper import Article
 #from indicoio.custom import Collection
+
+import operator
+import random
 
 import curses 
 from curses.ascii import isdigit 
@@ -27,7 +32,7 @@ def countsyl(word):
 
 def nthLastSyl(word, n, ind=0):
   word = word.lower()
-  print word
+  print word #DEBUG
   if not(word in d): return ""
   word = d[word][ind]
   if n > len(word): return ""
@@ -82,14 +87,55 @@ def isRhyme(arr):
 #
 # Return a possible rhyming word
 #
-def findRhyme(word):
-  toMatch = nthLastSyl(word, 1)
-  # Under construction
+def findRhyme(arr):
+  #| Fuck Doing this by hand |#
+  #toMatch = nthLastSyl(word, 1)
+  #for l in list(map(chr, range(97, 123))): # traverse alphabet
+   # w = l + word[1:]
+    #if w in d: return w
+  #return False
+  word = arr[-1].split(' ')[-1]
+  return map(lambda x: str(x['word']) ,RhymeBrain.getRhymes(word))
+
+#
+# Analyze sentiment for given array of sentences
+#
+def sentiment_text(arr):  
+  return RhymeBrain.analyzeSentiment(' '.join(
+    arr))['documentSentiment']['magnitude']
+
+#
+# Extracts keywords from text snippet
+#
+def getKeywords(arr):
+  text = ' '.join(arr)
+  words = {}
+  for w in text.split(' '):
+    if len(w) <= 3: continue
+    elif w in words: words[w] += 1
+    else: words[w] = 1
+  return max(words.iteritems(), key=operator.itemgetter(1))[0]
+
+#
+# Returns a possible rhyming line
+#
+def pickMatchingLine(prev, cur):
+  ind = random.randint(0, len(prev)-1)
+  choice = prev[ind]
+  if isRhyme([choice, cur[-1]]): return choice
+  pr = findRhyme(cur)
+  ind = random.randint(0, len(pr)-1)
+  return ' '.join(choice.split(' ')[:-1]) + ' ' + pr[ind]
+
 
 if __name__ == '__main__':
   
   #DEBUG
   #print syllabizeArray(["bitches for days aren't my type man lol", "Rapping everyday nomsayin"])
-  print countsylManual('quintessential')
-  #print isRhyme(['Thank mister caboose','I like goose'])
-  print countSylArray(['One syllable', 'Two syllables'])
+  #print countsylManual('quintessential')
+  print isRhyme(['Thank mister mongoose','I like yahoos'])
+  #print countSylArray(['One syllable', 'Two syllables'])
+  print findRhyme('make')
+  #print sentiment_text(['I love you', 'bitches', 'lol'])
+  #print getKeywords(["The quick brown fox jumps over the lazy dog"])
+  print pickMatchingLine(["This does not rhyme"], ["Make me a cake"])
