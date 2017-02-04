@@ -63,7 +63,7 @@ def main(speech_file):
             'config': {
                 # There are a bunch of config options you can specify. See
                 # https://goo.gl/KPZn97 for the full list.
-                'encoding': 'LINEAR16',  # raw 16-bit signed LE samples
+                'encoding': 'AMR_WB',  # raw 16-bit signed LE samples
                 'sampleRate': 16000,  # 16 khz
                 # See http://g.co/cloud/speech/docs/languages for a list of
                 # supported languages.
