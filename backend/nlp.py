@@ -12,6 +12,9 @@ import curses
 from curses.ascii import isdigit 
 import nltk
 from nltk.corpus import cmudict 
+import functools
+
+import json
 
 # Constant lexicon dictionary from NLTK
 d = cmudict.dict()
@@ -61,6 +64,7 @@ def wordRhyme(a, b, aind = 0, bind = 0):
 def getSylArray(sentence):
   return map(countsyl, sentence.split(' '))
 
+
 #
 # Returns a multi-dimensional array of syllables
 # Format: ['I am happy hahaha'] => [[1,1,2,3]]
@@ -75,7 +79,7 @@ def syllabizeArray(arr):
 # Returns array of total number of syllables in each sentence
 # 
 def countSylArray(arr):
-  return map(lambda n:reduce(lambda x, y: x+y, n), syllabizeArray(arr))
+  return list(map(lambda n:functools.reduce(lambda x, y: x+y, n), syllabizeArray(arr)))
 
 #
 # Returns a number (0-5) of how well two sentences rhyme
@@ -100,11 +104,9 @@ def findRhyme(arr):
 #
 # Analyze sentiment for given array of sentences
 #
-def sentiment_text(arr):  
-  print(arr)
+def sentiment_text(arr): 
   sent = RhymeBrain.analyzeSentiment(' '.join(arr))
-  print(sent)
-  return sent['results']
+  return sent.get('results', -1)
 
 #
 # Extracts keywords from text snippet
