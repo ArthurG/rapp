@@ -56,7 +56,8 @@ def addNewSong():
 
 @app.route('/seed',  methods=['POST'])
 def seed():
-    data = request.get_json(data['audioFile'])
+    data = request.get_json(force=True)
+    print(data)
     fakePartial = Rappartial("", "")
     db.session.add(fakePartial)
     for item in data['seed']:
