@@ -10,6 +10,7 @@ import text2speech
 import time
 import audio
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db = SQLAlchemy(app)
@@ -72,13 +73,12 @@ def index():
     if request.method == 'POST':
         print(request.get_json())
         print(request.files)
+        print(request.form)
         if 'file' not in request.files:
             return "failure", 404
         submitted_file = request.files['file']
 
-        arr = [0]
-        if 'sounds' in request.files:
-            arr = request.files['sounds']
+        times = [int(time) for time in dict(request.form)['times']]
 
         if submitted_file:
             filename = submitted_file.filename
@@ -91,16 +91,17 @@ def index():
             print(fileTrans)
             p = Rappartial(filename, fileTrans)
             db.session.add(p)
-            #filenames = audio.main(filename, arr)
-            #lines = []
-            #for f in filenames:
-            #    fileTrans = transcribe.main(os.path.join(os.getcwd(), f))
-            #    lines.append(fileTrans)
-            #    if fileTrans == None:
-            #        fileTrans = ""
-            #    print(fileTrans)
-            # l = Partialline(fileTrans, p)
-            #    db.session.add(l)
+
+            filenames = audio.main(filename, times)
+            lines = []
+            for f in filenames:
+                fileTrans = transcribe.main(os.path.join(os.getcwd(), f))
+                lines.append(fileTrans)
+                if fileTrans == None:
+                    fileTrans = ""
+                print(fileTrans)
+                l = Partialline(fileTrans, p)
+                db.session.add(l)
             db.session.commit()
 
             m = {"lines": [p.lyrics], "id": p.id}
@@ -168,9 +169,9 @@ def getSongAudio(song_id, newline):
     print(song.audioFileName, type(song.audioFileName))
     #fileCombined = str(song.audioFileName)
     fileCombined = filename
-    #fileCombined = str(time.time())
-    #print("AUDIO FILE NAME: " + song.audioFileName +" " + filename+".mp3")
-    #audio.merge([song.audioFileName, filename+".mp3"], fileCombined+".mp3")
+    fileCombined = str(time.time())
+    print("AUDIO FILE NAME: " + song.audioFileName +" " + filename+".mp3")
+    audio.merge([song.audioFileName, filename+".mp3"], fileCombined+".mp3")
     return send_from_directory(os.getcwd(), fileCombined+".mp3")
 
 def getWords(audioFile):

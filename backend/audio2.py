@@ -1,5 +1,5 @@
 from pydub import AudioSegment
-
+'''
 def main(file, array):
    
     sound = AudioSegment.from_file(file)
@@ -35,23 +35,23 @@ def main(file, array):
         names.append(choppedFileName + "_%d" % section + ".3gp")
 
     return names
-
+'''
     
 
 
 
-
+'''
 def merge(fileArr, fileNameUserWantsMergedFileToBe):
-    mergedFile = AudioSegment.from_file(fileArr[0])
+    mergedFile = AudioSegment.from_file(fileArr[0], "3gp")
     for file in fileArr:
         if(file == fileArr[0]):
             continue
-        sound = AudioSegment.from_file(file)
+        sound = AudioSegment.from_file(file, "3gp")
         mergedFile += sound
     
-    mergedFile.export(fileNameUserWantsMergedFileToBe, format="mp3")
+    mergedFile.export(fileNameUserWantsMergedFileToBe)
 
-    
+ '''   
 
 #main("rapp4.3gp", [30000,31000,35000])
 
@@ -61,10 +61,11 @@ def merge(fileArr, fileNameUserWantsMergedFileToBe):
 #"1486249802936.3gp",
 #], "fartypants.mp3")
 
-#merge(["1486266684133.3gp","1486266684133.3gp"], "potty.mp3")
+#merge(["1486266684133.3gp","1486266684133.3gp"], "potty.3gp")
 
-
-
+file=AudioSegment.from_mp3("reverse.mp3")
+file.reverse()
+file.export("gay.mp3", format="mp3")
 
 
 
