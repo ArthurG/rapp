@@ -4,6 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 from pprint import pprint
 import os
+import transcribe
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -11,11 +12,13 @@ db = SQLAlchemy(app)
 
 class Rappartial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    audioFileUrl = db.Column(db.String())
+    audioFileName = db.Column(db.String())
+    words = db.Column(db.String())
     analysis = db.Column(db.String())
 
-    def __init__(self, audioFile):
-        self.audioFileUrl = audioFileUrl
+    def __init__(self, audioFileName, words):
+        self.audioFileName = audioFileName
+        self.words = words
 
     def __repr__(self):
         return '<Song %r>' % self.words
@@ -66,8 +69,13 @@ def index():
             print(filename)
             print(os.getcwd())
             submitted_file.save(os.path.join(os.getcwd(), filename))
+            transcribed = transcribe.main(os.path.join(os.getcwd(), filename))
+            print(transcribed)
+            p = Rappartial(filename, transcribed)
+            db.session.add(p)
+            db.session.commit()
             lines = ["line1 is lit", "line2 is lit", "line3 is lit"]
-            m = {"lines": lines}
+            m = {"lines": [transcribed], "id": p.id}
             return json.dumps(m), 200
         return "failure", 404
 
@@ -76,7 +84,7 @@ def index():
 def modifyLines(song_id):
     song = Rappartial.filter_by(id=song_id).first_or_404()
     data = request.get_json(force=True)
-    song.lines = []
+    song.words = ','.join(data['lines'])
     db.session.add(song)
     for i in data['line']:
         l = Partialline(line, song)
