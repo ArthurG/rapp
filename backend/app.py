@@ -14,13 +14,13 @@ db = SQLAlchemy(app)
 class Rappartial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     audioFileName = db.Column(db.String())
-    words = db.Column(db.String())
+    lyrics = db.Column(db.String())
     analysis = db.Column(db.String())
     sentiment = db.Column(db.Float())
 
     def __init__(self, audioFileName, lyrics):
         self.audioFileName = audioFileName
-        self.words = words
+        self.lyrics = lyrics
         self.sentiment = nlp.sentiment_text(lyrics.split(" "))
 
     def __repr__(self):
@@ -85,6 +85,8 @@ def index():
             submitted_file.save(os.path.join(os.getcwd(), filename))
             transcribed = transcribe.main(os.path.join(os.getcwd(), filename))
             print(transcribed)
+            if transcribed == None:
+                transcribed = ""
             p = Rappartial(filename, transcribed)
             db.session.add(p)
             db.session.commit()

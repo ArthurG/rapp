@@ -101,8 +101,10 @@ def findRhyme(arr):
 # Analyze sentiment for given array of sentences
 #
 def sentiment_text(arr):  
-  return RhymeBrain.analyzeSentiment(' '.join(
-    arr))['documentSentiment']['magnitude']
+  print(arr)
+  sent = RhymeBrain.analyzeSentiment(' '.join(arr))
+  print(sent)
+  return sent['results']
 
 #
 # Extracts keywords from text snippet
