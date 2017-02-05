@@ -1,4 +1,4 @@
-package me.andrewtam.rapp.view;
+package me.andrewtam.rapp.view.main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -15,7 +15,7 @@ import io.realm.RealmRecyclerViewAdapter;
 import me.andrewtam.rapp.R;
 import me.andrewtam.rapp.model.Rap;
 
-public class MainAdapter extends RealmRecyclerViewAdapter<Rap, MainAdapter.Holder> implements RecyclerView.OnClickListener{
+public class MainAdapter extends RealmRecyclerViewAdapter<Rap, MainAdapter.Holder> {
 
     public MainAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<Rap> data, boolean autoUpdate) {
         super(context, data, autoUpdate);
@@ -36,12 +36,6 @@ public class MainAdapter extends RealmRecyclerViewAdapter<Rap, MainAdapter.Holde
 //        holder.length.setText(obj.getLength());
     }
 
-    @Override
-    public void onClick(View view) {
-        int itemPosition =  get getChildLayoutPosition(view);
-        String item = mList.get(itemPosition);
-        Toast.makeText(mContext, item, Toast.LENGTH_LONG).show();
-    }
 
     class Holder extends RecyclerView.ViewHolder {
         @BindView(R.id.title) TextView title;

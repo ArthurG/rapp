@@ -1,4 +1,4 @@
-package me.andrewtam.rapp.view;
+package me.andrewtam.rapp.view.lyric;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

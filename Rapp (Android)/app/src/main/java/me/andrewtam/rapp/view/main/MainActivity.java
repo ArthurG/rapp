@@ -1,4 +1,4 @@
-package me.andrewtam.rapp.view;
+package me.andrewtam.rapp.view.main;
 
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
