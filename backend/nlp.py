@@ -2,8 +2,6 @@ import nltk
 from nltk.misc.sort import *
 from nltk.corpus import treebank
 import RhymeBrain
-#from newspaper import Article
-#from indicoio.custom import Collection
 
 import operator
 import random
@@ -112,13 +110,11 @@ def sentiment_text(arr):
 # Extracts keywords from text snippet
 #
 def getKeywords(arr):
-  text = ' '.join(arr)
-  words = {}
-  for w in text.split(' '):
-    if len(w) <= 3: continue
-    elif w in words: words[w] += 1
-    else: words[w] = 1
-  return max(words.iteritems(), key=operator.itemgetter(1))[0]
+  entries = RhymeBrain.findSalient(' '.join(arr))['entities']
+  topPhrase = entries[0]
+  for i in entries:
+    if i['salience'] > topPhrase['salience']: topPhrase = i
+  return topPhrase['name']
 
 #
 # Returns a possible rhyming line
@@ -141,8 +137,8 @@ def splitIntoLines(rap):
   RhymeBrain.splitRap(rap)
 
 
-#if __name__ == '__main__':
-  
+if __name__ == '__main__':
+  pass
   #DEBUG
   #print syllabizeArray(["bitches for days aren't my type man lol", "Rapping everyday nomsayin"])
   #print countsylManual('quintessential')

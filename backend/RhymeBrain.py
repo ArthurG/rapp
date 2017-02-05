@@ -14,6 +14,12 @@ def analyzeSentiment(text):
 		json=payload, headers=headers)
 	return r.json()
 
+def findSalient(text):
+	payload = {"encodingType": "UTF8", "document": {"type": "PLAIN_TEXT", "content": text}}
+	r = requests.post('https://language.googleapis.com/v1/documents:analyzeEntities?key=' + API_KEY,
+		json=payload)
+	return r.json()
+
 def splitRap(r):
 	payload = {"encodingType": "UTF8", "document": {"type": "PLAIN_TEXT","content": r}}
 	r = requests.post('https://language.googleapis.com/v1/documents:analyzeSyntax?key=' + API_KEY,
