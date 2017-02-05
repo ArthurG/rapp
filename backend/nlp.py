@@ -140,6 +140,12 @@ def getKeywords(arr):
 #
 def pickMatchingLine(prev, cur, n=1):
   linesArray = []
+
+  subject=getKeywords(prev)
+  print(subject)
+
+  
+
   for i in range(0, n):
     ind = random.randint(0, len(prev)-1)
     choice = prev[ind]
