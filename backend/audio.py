@@ -61,7 +61,7 @@ def merge(fileArr, fileNameUserWantsMergedFileToBe):
 #"1486249802936.3gp",
 #], "fartypants.mp3")
 
-
+#merge(["1486266684133.3gp","1486286308.8937547.mp3"], "star.mp3")
 
 
 

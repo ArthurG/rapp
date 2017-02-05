@@ -114,10 +114,9 @@ def getAnalytics(song_id):
     noob = {"sentiment": nlp.sentiment_text([lines]),
             "keywords": nlp.getKeywords([lines]),
             "syllableArray": [sum(nlp.countSylArray([lines]))],
-            "rhymeWords": list(nlp.findRhyme([lines]))
-            #"rhymability":...
+            "rhymeWords": list(nlp.findRhyme([lines])[:10]),
+            "rhymability":nlp.howRhymable([lines])
             #"alliteration":...
-            
             
             }
     print(noob)
@@ -164,11 +163,15 @@ def newlyrics(song_id):
 def getSongAudio(song_id, newline):
     #consumes nextLine, id of the song
     song = Rappartial.query.filter_by(id=song_id).first_or_404()
-
-    print("name: '{}'".format(song.lyrics + " " + newline))
     filename = str(time.time())
-    text2speech.text2speech(song.lyrics + " " + newline, filename)
-    return send_from_directory(os.getcwd(), filename+".mp3")
+    text2speech.text2speech(newline, filename)
+    print(song.audioFileName, type(song.audioFileName))
+    #fileCombined = str(song.audioFileName)
+    fileCombined = filename
+    #fileCombined = str(time.time())
+    #print("AUDIO FILE NAME: " + song.audioFileName +" " + filename+".mp3")
+    #audio.merge([song.audioFileName, filename+".mp3"], fileCombined+".mp3")
+    return send_from_directory(os.getcwd(), fileCombined+".mp3")
 
 def getWords(audioFile):
     return "This is a bunch of sample words"
