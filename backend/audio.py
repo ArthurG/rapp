@@ -1,4 +1,5 @@
 from pydub import AudioSegment
+
 def main(file, array):
    
     sound = AudioSegment.from_file(file)
@@ -43,18 +44,36 @@ def main(file, array):
     # sound = AudioSegment.from_3gp("/path/to/file.3gp")
     # len() and slicing are in milliseconds 
     #halfway_point = len(sound) / 2
+
+    #Demo Code:
+
+    #from pydub import AudioSegment
+
+    # wave and raw don’t use ffmpeg
+    #wav_audio = AudioSegment.from_file("audio.wav", format="wav")
+    #raw_audio = AudioSegment.from_file("audio.wav", format="raw",
+    #                               frame_rate=44100, channels=2, sample_width=2)
+
+    #wav_audio.export("audio.mp3", format="mp3")
+    #raw_audio.export("audio1.mp3", format="mp3")
+
     
     half1 = sound[0: len(sound)/2]
     half2 = sound[len(sound)/2 : len(sound)]
 
-    backwards = sound.reverse()
-    backwards.export("reverse.3gp")
+    #backwards = sound.reverse()
+    #backwards.export("reverse.3gp")
     
-    half1.export("half1.3gp")
-    half2.export("half2.3gp")
+    #half1.export("half1.3gp")
+    #half2.export("half2.3gp")
     
     print (names)
+
+    #mp3file = AudioSegment.from_file("reverse.mp3")
+    #totSong = mp3file+sound
+    #totSong.export("poop.mp3", format="mp3")
     return names
+
     
    # next_part = sound[halfway_point:]
 
@@ -125,4 +144,34 @@ if __name__ == '__main__':
 """
 
 #main("rapp4.3gp", [30000,31000,35000])
+
+
+
+
+def merge(fileArr, fileNameUserWantsMergedFileToBe):
+    mergedFile = AudioSegment.from_file(fileArr[0])
+    for file in fileArr:
+        if(file == fileArr[0]):
+            continue
+        sound = AudioSegment.from_file(file)
+        mergedFile += sound
+    
+    mergedFile.export(fileNameUserWantsMergedFileToBe, format="mp3")
+
+    
+
+main("rapp4.3gp", [30000,31000,35000])
+
+#merge(["poop.mp3", "reverse.mp3", "1486231725915.3gp" ,    "1486235464774.3gp"     ,
+#"1486236990831.3gp"     ,
+#"1486238870432.3gp"   ,  
+#"1486249802936.3gp",
+#], "fartypants.mp3")
+
+
+
+
+
+
+
 
