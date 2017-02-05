@@ -8,6 +8,7 @@ import transcribe
 import nlp
 import text2speech
 import time
+import audio
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -73,39 +74,51 @@ def index():
         print(request.files)
         if 'file' not in request.files:
             return "failure", 404
-
         submitted_file = request.files['file']
+
+        arr = [0]
+        if 'sounds' in request.files:
+            arr = request.files['sounds']
+
         if submitted_file:
             filename = submitted_file.filename
             print(filename)
             print(os.getcwd())
             submitted_file.save(os.path.join(os.getcwd(), filename))
-            transcribed = transcribe.main(os.path.join(os.getcwd(), filename))
-            print(transcribed)
-            if transcribed == None:
-                transcribed = ""
-            p = Rappartial(filename, transcribed)
+            p = Rappartial(filename, "")
             db.session.add(p)
+            filenames = audio.main(filename, arr)
+            lines = []
+            for f in filenames:
+                fileTrans = transcribe.main(os.path.join(os.getcwd(), f))
+                lines.append(fileTrans)
+                if fileTrans == None:
+                    fileTrans = ""
+                print(fileTrans)
+                l = Partialline(fileTrans, p)
+                db.session.add(l)
             db.session.commit()
-            lines = ["line1 is lit", "line2 is lit", "line3 is lit"]
-            m = {"lines": [transcribed], "id": p.id}
+
+            m = {"lines": [lines], "id": p.id}
             return json.dumps(m), 200
         return "failure", 404
 
+@app.route('/analytics/<song_id>', methods=['GET'])
+def getAnalytics(song_id):
+    song = Rappartial.query.filter_by(id=song_id).first_or_404()
+    lines = song.words
+    noob = json.dumps({"sentiment": nlp.sentiment_text(lines),
+            "keywords": nlp.getKeywords(lines),
+            "syllableArray": ",".join(nlp.countSylArray(lines)),
+            "rhymeWords": nlp.findRhyme(lines)})
+    return noob
+
+
 #Also consume the id of the song
-@app.route('/songsGet/<song_id>', methods=['GET'])
+@app.route('/songs_get/<song_id>', methods=['GET'])
 def getLine(song_id):
     song = Rappartial.query.filter_by(id=song_id).first_or_404()
-    data = request.get_json(force=True)
-    song.words = ','.join(data['lines'])
-    db.session.add(song)
-    print(data)
-
-    for i in data['lines']:
-        l = Partialline(i, song)
-        db.session.add(l)
-    db.session.commit()
-    m = {"lines": [line for line in data['lines']]}
+    m = {"lines": [line for line in song.lines]}
     return json.dumps(m), 200
 
 
@@ -129,7 +142,7 @@ def modifyLines(song_id):
 @app.route('/songs/<song_id>/newline', methods=['POST'])
 def newlyrics(song_id):
     song = Rappartial.query.filter_by(id=song_id).first_or_404()
-    currLyrics = [line.words for line in  song.lines]
+    currLyrics = [song.words]
     prevLyrics = [line.words for line in Rappartial.query.filter_by(id != song_id).filter( sentiment <= song.sentiment + 0.2 ).filter(sentiment >= song.sentiment - 0.2)]
     print("CurrLyrics :{}".format(currLyrics))
     print("PrevLyrics :{}".format(prevLyrics))
