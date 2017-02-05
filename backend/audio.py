@@ -8,34 +8,51 @@ def main(file, array):
     names=[]
     choppedFileName = file[:-4]
     
-    fractionals=[]
+
+
+    for j in (0, len(array)-1):
+        print("The", j,"was at time click time for ", array[j])
+
+
+    initTime = array[0]
+    print("Init Time is, ", initTime)
+    for j in range(0, len(array)-1):
+        array[j] -= initTime
+        print (array[j])
+
+    previous = 0
     
-    i = 0 
-    fractionals.append(0)
-    for j in range(1, len(array)):
-        fractionals.append((array[j]-array[i])/len(sound))
-        i += 1
-
-    fractionals.append(1)
-
-    for j in fractionals:
-        print(j)
-
     i=0
-    for j in fractionals:
-        if(j==0):
-            continue
-        print(i, " and the ", j);
-        print(len(sound))
-        next_part = sound[len(sound)*i: len(sound)*j]
-        i = j
-        section += 1
-        next_part.export(choppedFileName + "_%d" % section + ".3gp")
-        print (choppedFileName + "we splitted out section %d" % section + ".3gp")
-        names.append(choppedFileName + "_%d" % section + ".3gp")
+    print("Length of audio is ", len(sound))
 
+    for j in range(1, len(array)):
+         next_part = sound[previous : array[j]]
+         print("Length of audioseg is ", len(next_part))
+         previous = array[j]
+         section += 1
+         next_part.export(choppedFileName + "_%d" % section + ".3gp")
+         names.append(choppedFileName + "_%d" % section + ".3gp")
+
+    section += 1     
+    next_part = sound[array[-1] : len(sound)-1]
+    next_part.export(choppedFileName + "_%d" % section + ".3gp")    
     return names
 
+
+#main("1486276797127.3gp", [1486276797127, 1486276908227, 1486276909370, 1486276911176])    
+
+'''
+    for j in range(1,len(array)):
+        print(i, " and the ", j)
+
+        print(len(sound));
+        print(len(sound)*i,":left time mine right time:", len(sound)*j)
+     
+        next_part = sound[len(sound)*array[j]: len(sound)*j]
+        i = j
+        fractionals[j+1] = fractionals[j+1]+j
+        
+'''
     
 
 
