@@ -96,19 +96,25 @@ def howRhymable(arr):
     score += isRhyme(arr[i:i+2])
   return score
 
+def rhymeHelper(x,y):
+  if 'b' in x['flags'] and 'b' in y['flags']:
+    if len(x['word']) <= 2: return 1
+    if len(y['word']) <= 2: return -1
+    if x['freq'] > y['freq']:
+      return -1
+    return 1  
+  elif 'b' in x['flags']:
+    return -1
+  return 1
 
 #
 # Return a possible rhyming word
 #
 def findRhyme(arr):
   #| Fuck Doing this by hand |#
-  #toMatch = nthLastSyl(word, 1)
-  #for l in list(map(chr, range(97, 123))): # traverse alphabet
-   # w = l + word[1:]
-    #if w in d: return w
-  #return False
   word = arr[-1].split(' ')[-1]
-  return map(lambda x: str(x['word']) ,RhymeBrain.getRhymes(word))
+  return map(lambda x: str(x['word']), sorted(RhymeBrain.getRhymes(word), rhymeHelper))
+    
 
 #
 # Analyze sentiment for given array of sentences
@@ -157,8 +163,8 @@ if __name__ == '__main__':
   #print countsylManual('quintessential')
   #print isRhyme(['Thank mister mongoose','I like yahoos'])
   #print countSylArray(['One syllable', 'Two syllables'])
-  #print findRhyme('make')
+  #print findRhyme(['hello'])
   #print sentiment_text(['I love you', 'bitches', 'lol'])
-  #print getKeywords(["The quick brown fox jumps over the lazy dog"])
+  #print getKeywords(["Hello"])
   #print pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5)
   #print howRhymable(["I make", "on a lake", "a cake", "I bake"])
