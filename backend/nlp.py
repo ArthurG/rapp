@@ -122,12 +122,8 @@ def sentiment_text(arr):
 #
 def getKeywords(arr):
   entries = RhymeBrain.findSalient(' '.join(arr))['entities']
-<<<<<<< HEAD
   if len(entries) <= 0:
       return ""
-=======
-  if len(entries) < 1: return None
->>>>>>> b4c78e7c297e2ebc22d7d21ec27c8bd422d8da97
   topPhrase = entries[0]
   for i in entries:
     if i['salience'] > topPhrase['salience']: topPhrase = i
