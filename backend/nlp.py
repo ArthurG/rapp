@@ -113,7 +113,7 @@ def rhymeHelper(x,y):
 def findRhyme(arr):
   #| Fuck Doing this by hand |#
   word = arr[-1].split(' ')[-1]
-  return map(lambda x: str(x['word']), sorted(RhymeBrain.getRhymes(word), rhymeHelper))
+  return list(map(lambda x: str(x['word']), sorted(RhymeBrain.getRhymes(word), key= functools.cmp_to_key(rhymeHelper))))
     
 
 #
@@ -166,5 +166,5 @@ if __name__ == '__main__':
   #print findRhyme(['hello'])
   #print sentiment_text(['I love you', 'bitches', 'lol'])
   #print getKeywords(["Hello"])
-  #print pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5)
+  print(pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5))
   #print howRhymable(["I make", "on a lake", "a cake", "I bake"])
