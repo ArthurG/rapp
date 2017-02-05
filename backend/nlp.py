@@ -87,6 +87,17 @@ def isRhyme(arr):
   return wordRhyme(arr[0].split(' ')[-1], arr[1].split(' ')[-1])
 
 #
+# Returns overall score of rhymability
+#
+def howRhymable(arr):
+  if len(arr) % 2 == 1: arr.pop()
+  score = 0
+  for i in range(0, len(arr)-1):
+    score += isRhyme(arr[i:i+2])
+  return score
+
+
+#
 # Return a possible rhyming word
 #
 def findRhyme(arr):
@@ -111,6 +122,7 @@ def sentiment_text(arr):
 #
 def getKeywords(arr):
   entries = RhymeBrain.findSalient(' '.join(arr))['entities']
+  if len(entries) < 1: return None
   topPhrase = entries[0]
   for i in entries:
     if i['salience'] > topPhrase['salience']: topPhrase = i
@@ -148,3 +160,4 @@ if __name__ == '__main__':
   #print sentiment_text(['I love you', 'bitches', 'lol'])
   #print getKeywords(["The quick brown fox jumps over the lazy dog"])
   #print pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5)
+  #print howRhymable(["I make", "on a lake", "a cake", "I bake"])

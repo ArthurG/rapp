@@ -33,5 +33,11 @@ def breakLines():
 	rap = data['rap']
 	return nlp.splitIntoLines(rap)
 
+@app.route('/evaluate', methods=['POST'])
+def evaluate():
+	data = request.get_json(force=True)
+	lines = data['lines']
+	return json.dumps({"rhymability": nlp.howRhymable(lines)})
+
 app.run()
 
