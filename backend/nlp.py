@@ -119,13 +119,16 @@ def getKeywords(arr):
 #
 # Returns a possible rhyming line
 #
-def pickMatchingLine(prev, cur):
-  ind = random.randint(0, len(prev)-1)
-  choice = prev[ind]
-  if isRhyme([choice, cur[-1]]): return choice
-  pr = findRhyme(cur)
-  ind = random.randint(0, len(pr)-1)
-  return ' '.join(choice.split(' ')[:-1]) + ' ' + pr[ind]
+def pickMatchingLine(prev, cur, n=1):
+  linesArray = []
+  for i in range(0, n):
+    ind = random.randint(0, len(prev)-1)
+    choice = prev[ind]
+    if isRhyme([choice, cur[-1]]): return choice
+    pr = findRhyme(cur)
+    ind = random.randint(0, len(pr)-1)
+    linesArray.append(' '.join(choice.split(' ')[:-1]) + ' ' + pr[ind])
+  return linesArray
 
 #
 # Splits a rap into an array of lines
@@ -144,4 +147,4 @@ if __name__ == '__main__':
   print findRhyme('make')
   #print sentiment_text(['I love you', 'bitches', 'lol'])
   #print getKeywords(["The quick brown fox jumps over the lazy dog"])
-  print pickMatchingLine(["This does not rhyme"], ["Make me a cake"])
+  print pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5)

@@ -19,12 +19,13 @@ def performAnalysis():
 	print noob
 	return noob
 
-@app.route('/generateline', methods=['POST'])
-def generateLine():
+@app.route('/generatelines', methods=['POST'])
+def generateLines():
 	data = request.get_json(force=True)
 	curLines = data['cur_lines']
 	prevLines = data['prev_lines']
-	return json.dumps({"Generated Line": nlp.pickMatchingLine(prevLines,curLines)})
+	num = data['num']
+	return json.dumps({"Generated Lines": nlp.pickMatchingLine(prevLines,curLines, num)})
 
 @app.route('/break', methods=['POST'])
 def breakLines():
