@@ -125,7 +125,7 @@ def getAnalytics(song_id):
 
 
 #Also consume the id of the song
-@app.route('/songs_get/<song_id>', methods=['GET'])
+@app.route('/lyrics/<song_id>', methods=['GET'])
 def getLine(song_id):
     song = Rappartial.query.filter_by(id=song_id).first_or_404()
     m = {"lines": [song.lyrics]}
