@@ -97,6 +97,8 @@ def howRhymable(arr):
   return score
 
 def rhymeHelper(x,y):
+  if x['score'] > y['score']: return -1
+  if y['score'] > x['score']: return 1
   if 'b' in x['flags'] and 'b' in y['flags']:
     if len(x['word']) <= 2: return 1
     if len(y['word']) <= 2: return -1
@@ -115,6 +117,11 @@ def findRhyme(arr):
   word = arr[-1].split(' ')[-1]
   return list(map(lambda x: str(x['word']), sorted(RhymeBrain.getRhymes(word), key= functools.cmp_to_key(rhymeHelper))))
     
+#
+# Return number of alliterating words
+#
+def alliteration():
+  pass
 
 #
 # Analyze sentiment for given array of sentences
@@ -165,12 +172,12 @@ def splitIntoLines(rap):
 if __name__ == '__main__':
   pass
   #DEBUG
-  #print syllabizeArray(["bitches for days aren't my type man lol", "Rapping everyday nomsayin"])
-  #print countsylManual('quintessential')
-  #print isRhyme(['Thank mister mongoose','I like yahoos'])
-  #print countSylArray(['One syllable', 'Two syllables'])
-  #print findRhyme(['hello'])
-  #print sentiment_text(['I love you', 'bitches', 'lol'])
-  #print getKeywords(["Hello"])
-  print(pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5))
-  #print howRhymable(["I make", "on a lake", "a cake", "I bake"])
+  #print(syllabizeArray(["bitches for days aren't my type man lol", "Rapping everyday nomsayin"]))
+  #print(countsylManual('quintessential'))
+  #print(isRhyme(['Thank mister mongoose','I like yahoos']))
+  #print(countSylArray(['One syllable', 'Two syllables']))
+  print(findRhyme(['app']))
+  #print(sentiment_text(['I love you', 'bitches', 'lol']))
+  #print(getKeywords(["Hello"]))
+  #print(pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5))
+  #print(howRhymable(["I make", "on a lake", "a cake", "I bake"]))
