@@ -24,7 +24,7 @@ class Rappartial(db.Model):
     def __init__(self, audioFileName, lyrics):
         self.audioFileName = audioFileName
         self.lyrics = lyrics
-        self.sentiment = nlp.sentiment_text(lyrics.split(" "))
+        self.sentiment = nlp.sentiment_text(self.lyrics.split(" "))
 
     def __repr__(self):
         return '<Song %r>' % self.lyrics
@@ -85,40 +85,50 @@ def index():
             print(filename)
             print(os.getcwd())
             submitted_file.save(os.path.join(os.getcwd(), filename))
-            p = Rappartial(filename, "")
+            fileTrans = transcribe.main(os.path.join(os.getcwd(), filename))
+            if fileTrans == None:
+                fileTrans = ""
+            print(fileTrans)
+            p = Rappartial(filename, fileTrans)
             db.session.add(p)
-            filenames = audio.main(filename, arr)
-            lines = []
-            for f in filenames:
-                fileTrans = transcribe.main(os.path.join(os.getcwd(), f))
-                lines.append(fileTrans)
-                if fileTrans == None:
-                    fileTrans = ""
-                print(fileTrans)
-                l = Partialline(fileTrans, p)
-                db.session.add(l)
+            #filenames = audio.main(filename, arr)
+            #lines = []
+            #for f in filenames:
+            #    fileTrans = transcribe.main(os.path.join(os.getcwd(), f))
+            #    lines.append(fileTrans)
+            #    if fileTrans == None:
+            #        fileTrans = ""
+            #    print(fileTrans)
+            # l = Partialline(fileTrans, p)
+            #    db.session.add(l)
             db.session.commit()
 
-            m = {"lines": [lines], "id": p.id}
+            m = {"lines": [p.lyrics], "id": p.id}
             return json.dumps(m), 200
         return "failure", 404
 
 @app.route('/analytics/<song_id>', methods=['GET'])
 def getAnalytics(song_id):
     song = Rappartial.query.filter_by(id=song_id).first_or_404()
-    lines = song.words
-    noob = json.dumps({"sentiment": nlp.sentiment_text(lines),
-            "keywords": nlp.getKeywords(lines),
-            "syllableArray": ",".join(nlp.countSylArray(lines)),
-            "rhymeWords": nlp.findRhyme(lines)})
-    return noob
+    lines = song.lyrics
+    noob = {"sentiment": nlp.sentiment_text([lines]),
+            "keywords": nlp.getKeywords([lines]),
+            "syllableArray": [sum(nlp.countSylArray([lines]))],
+            "rhymeWords": list(nlp.findRhyme([lines]))
+            #"rhymability":...
+            #"alliteration":...
+            
+            
+            }
+    print(noob)
+    return json.dumps(noob)
 
 
 #Also consume the id of the song
 @app.route('/songs_get/<song_id>', methods=['GET'])
 def getLine(song_id):
     song = Rappartial.query.filter_by(id=song_id).first_or_404()
-    m = {"lines": [line for line in song.lines]}
+    m = {"lines": [song.lyrics]}
     return json.dumps(m), 200
 
 
