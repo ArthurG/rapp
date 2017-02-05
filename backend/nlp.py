@@ -32,11 +32,11 @@ def countsyl(word):
 
 def nthLastSyl(word, n, ind=0):
   word = word.lower()
-  print word #DEBUG
+  #print word #DEBUG
   if not(word in d): return ""
   word = d[word][ind]
   if n > len(word): return ""
-  print str(word[-n]) #DEBUG
+  #print str(word[-n]) #DEBUG
   return str(word[-n])
 
 def wordRhyme(a, b, aind = 0, bind = 0):
@@ -137,7 +137,7 @@ def splitIntoLines(rap):
   RhymeBrain.splitRap(rap)
 
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
   
   #DEBUG
   #print syllabizeArray(["bitches for days aren't my type man lol", "Rapping everyday nomsayin"])

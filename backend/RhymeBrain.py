@@ -20,6 +20,6 @@ def splitRap(r):
 		json=payload)
 	return r.json()
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
 	#print getRhymes('duck')
-	print analyzeSentiment('i love lucy')
+	#print analyzeSentiment('i love lucy')
