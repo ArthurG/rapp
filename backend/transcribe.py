@@ -78,21 +78,24 @@ def main(speech_file):
     response = service_request.execute()
 
     # First print the raw json response
-    print(json.dumps(response, indent=2))
+    #print(json.dumps(response, indent=2))
 
     # Now print the actual transcriptions
     for result in response.get('results', []):
-        print('Result:')
+        #print('Result:')
         for alternative in result['alternatives']:
-            print(u'  Alternative: {}'.format(alternative['transcript']))
+            #print(alternative['transcript'])
+            return alternative['transcript']
+            #print(u'  Alternative: {}'.format(alternative['transcript']))
     # [END send_request]
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument(
-        'speech_file', help='Full path of audio file to be recognized')
-    args = parser.parse_args()
-    main(args.speech_file)
+
+#if __name__ == '__main__':
+#    parser = argparse.ArgumentParser(
+#        description=__doc__,
+#        formatter_class=argparse.RawDescriptionHelpFormatter)
+#    parser.add_argument(
+#        'speech_file', help='Full path of audio file to be recognized')
+#    args = parser.parse_args()
+#    main(args.speech_file)
     # [END run_application]
