@@ -26,5 +26,11 @@ def generateLine():
 	prevLines = data['prev_lines']
 	return json.dumps({"Generated Line": nlp.pickMatchingLine(prevLines,curLines)})
 
+@app.route('/break', methods=['POST'])
+def breakLines():
+	data = request.get_json(force=True)
+	rap = data['rap']
+	return nlp.splitIntoLines(rap)
+
 app.run()
 

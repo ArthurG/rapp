@@ -127,6 +127,12 @@ def pickMatchingLine(prev, cur):
   ind = random.randint(0, len(pr)-1)
   return ' '.join(choice.split(' ')[:-1]) + ' ' + pr[ind]
 
+#
+# Splits a rap into an array of lines
+#
+def splitIntoLines(rap):
+  RhymeBrain.splitRap(rap)
+
 
 if __name__ == '__main__':
   
