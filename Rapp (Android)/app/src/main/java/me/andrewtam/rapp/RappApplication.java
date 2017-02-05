@@ -27,6 +27,7 @@ public class RappApplication extends Application {
         return mPresenterComponent;
     }
 
+
     private void initPresenterComponent() {
         mPresenterComponent = DaggerPresenterComponent.create();
     }

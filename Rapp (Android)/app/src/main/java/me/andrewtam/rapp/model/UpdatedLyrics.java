@@ -2,10 +2,6 @@ package me.andrewtam.rapp.model;
 
 import java.util.List;
 
-/**
- * Created by andrewtam on 2017-02-04.
- */
-
 public class UpdatedLyrics {
     List<String> lines;
 

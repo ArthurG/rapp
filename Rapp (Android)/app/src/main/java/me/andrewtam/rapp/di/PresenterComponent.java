@@ -3,6 +3,7 @@ package me.andrewtam.rapp.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import me.andrewtam.rapp.presenter.LyricPresenter;
 import me.andrewtam.rapp.presenter.MainPresenter;
 
 @Singleton
@@ -10,4 +11,6 @@ import me.andrewtam.rapp.presenter.MainPresenter;
 public interface PresenterComponent {
 
     void inject(MainPresenter presenter);
+
+    void inject(LyricPresenter presenter);
 }

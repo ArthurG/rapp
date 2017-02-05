@@ -23,7 +23,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.lyric.LyricActivity" />
+        <activity
+            android:name=".view.lyric.LyricActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".view.NewSong"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
