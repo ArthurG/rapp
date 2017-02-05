@@ -102,7 +102,7 @@ def findRhyme(arr):
 #
 def sentiment_text(arr):  
   return RhymeBrain.analyzeSentiment(' '.join(
-    arr))['results']
+    arr))['documentSentiment']['magnitude']
 
 #
 # Extracts keywords from text snippet
@@ -145,6 +145,6 @@ if __name__ == '__main__':
   #print isRhyme(['Thank mister mongoose','I like yahoos'])
   #print countSylArray(['One syllable', 'Two syllables'])
   #print findRhyme('make')
-  print sentiment_text(['I love you', 'bitches', 'lol'])
+  #print sentiment_text(['I love you', 'bitches', 'lol'])
   #print getKeywords(["The quick brown fox jumps over the lazy dog"])
   #print pickMatchingLine(["This does not rhyme"], ["Make me a cake"], 5)
