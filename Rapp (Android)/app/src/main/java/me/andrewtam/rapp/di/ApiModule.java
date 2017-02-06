@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class ApiModule {
 
-    final String BASE_URL = "http://69412307.ngrok.io";
+    final String BASE_URL = "http://44186ec2.ngrok.io";
 
     @Provides
     @Singleton

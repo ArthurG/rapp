@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/SplashTheme">
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.LyricActivity" />
+        <activity
+            android:name=".view.lyric.LyricActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".view.NewSong"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
