@@ -105,6 +105,7 @@ def index():
             db.session.commit()
 
             m = {"lines": [p.lyrics], "id": p.id}
+            print(m)
             return json.dumps(m), 200
         return "failure", 404
 
@@ -152,11 +153,12 @@ def modifyLines(song_id):
 @app.route('/songs/<song_id>/newline', methods=['POST'])
 def newlyrics(song_id):
     song = Rappartial.query.filter_by(id=song_id).first_or_404()
-    currLyrics = [song.words]
-    prevLyrics = [line.words for line in Rappartial.query.filter_by(id != song_id).filter( sentiment <= song.sentiment + 0.2 ).filter(sentiment >= song.sentiment - 0.2)]
+    currLyrics = [song.lyrics]
+    prevLyrics = [line.lyrics for line in Rappartial.query.filter(id != song_id).all() if len(line.lyrics.split(" ")) >= 2]
+    ##prevLyrics = [line.words for line in Partialline.query.filter(sentiment <= 0.5).all() if len(line.words.split(" ")) >= 2]
     print("CurrLyrics :{}".format(currLyrics))
     print("PrevLyrics :{}".format(prevLyrics))
-    newLines = pickMatchingLine(prevLyrics, currLyrics, n=5)
+    newLines = nlp.pickMatchingLine(prevLyrics, currLyrics, n=5)
     m = {'newlines': newLines}
     return json.dumps(m)
 
